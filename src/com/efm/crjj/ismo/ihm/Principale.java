@@ -23,7 +23,7 @@ import javax.swing.table.DefaultTableModel;
 import com.efm.crjj.ismo.metier.IMetier;
 import com.efm.crjj.ismo.metier.MetierEmploye;
 import com.efm.crjj.ismo.model.Employe;
-import com.efm.crjj.ismo.utils.DoubleValidate;
+import com.efm.crjj.ismo.ihm.DoubleValidate;
 
 import javax.swing.JScrollPane;
 import java.awt.Font;
@@ -106,10 +106,10 @@ public class Principale extends JFrame {
 		textField_1.setDocument(new DoubleValidate());
 		textField_1.setColumns(10);
 
-		//JButton btnNewButton = new MyButton("Engestrer" ,"/com/efm/crjj/ismo/img/more.png");
+		
 		JButton btnNewButton = new JButton("Enregistrer");
 
-		ImageIcon image6= new ImageIcon(getClass().getResource("/com/efm/crjj/ismo/img/more.png"));
+		ImageIcon image6= new ImageIcon(getClass().getResource("C:\\Users\\omar hayay\\examenswing\\src\\diskette.png"));
 		btnNewButton.setIcon(image6);
 		btnNewButton.setIconTextGap(5);
 		btnNewButton.setBounds(10, 185, 222, 23);
@@ -134,18 +134,18 @@ public class Principale extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int index=table.getSelectedRow();
 				if(index==-1) {
-					JOptionPane.showConfirmDialog(null, "Rien n'est selectionner");
+					JOptionPane.showConfirmDialog(null, "nothing selected");
 					return;
 				}
 				Employe em= emp.getOne((int)table.getModel().getValueAt(index, 0));
 				if(emp.delete(em)) {
-					JOptionPane.showConfirmDialog(null, "Supprimmer Avec Success");
+					JOptionPane.showConfirmDialog(null, "item deleted");
 					table.setModel(new EmployeModel(emp.getAll()));
 				}
 			}
 		});
 		btnNewButton_1.setHorizontalAlignment(SwingConstants.LEFT);
-		image6 = new ImageIcon(getClass().getResource("/com/efm/crjj/ismo/img/bin.png"));
+		image6 = new ImageIcon(getClass().getResource("C:\\Users\\omar hayay\\examenswing\\src\\delete.png"));
 		btnNewButton_1.setIcon(image6);
 		btnNewButton_1.setIconTextGap(5);
 		btnNewButton_1.setBounds(472, 286, 124, 23);
@@ -153,7 +153,7 @@ public class Principale extends JFrame {
 		
 		JButton btnNewButton_1_1 = new JButton("Imprimer");
 
-		image6= new ImageIcon(getClass().getResource("/com/efm/crjj/ismo/img/printer.png"));
+		image6= new ImageIcon(getClass().getResource("C:\\Users\\omar hayay\\examenswing\\src\\printing.png"));
 		btnNewButton_1_1.setIcon(image6);
 		btnNewButton_1_1.setIconTextGap(5);
 		btnNewButton_1_1.setBounds(327, 286, 135, 23);
