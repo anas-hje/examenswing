@@ -23,7 +23,7 @@ import javax.swing.table.DefaultTableModel;
 import com.efm.crjj.ismo.metier.IMetier;
 import com.efm.crjj.ismo.metier.MetierEmploye;
 import com.efm.crjj.ismo.model.Employe;
-import com.efm.crjj.ismo.ihm.DoubleValidate;
+import com.efm.crjj.ismo.utils.DoubleValidate;
 
 import javax.swing.JScrollPane;
 import java.awt.Font;
@@ -41,6 +41,7 @@ public class Principale extends JFrame {
 	private JTable table;
 	private static String[] depart = { "RH", "Finance", "Production" };
 	private DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(depart);
+	private JLabel lblNewLabel_3_1;
 
 	/**
 	 * Launch the application.
@@ -106,8 +107,26 @@ public class Principale extends JFrame {
 		textField_1.setDocument(new DoubleValidate());
 		textField_1.setColumns(10);
 
-		
+		//JButton btnNewButton = new MyButton("Engestrer" ,"/com/efm/crjj/ismo/img/more.png");
 		JButton btnNewButton = new JButton("Enregistrer");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(textField.getText()=="" || textField_1.getText()=="") {
+					JOptionPane.showMessageDialog(null, "Remplir Tous les champs");
+					return;
+				}
+				Employe em = new Employe();
+				em.setId(12);
+				em.setNom(textField.getText());
+				em.setDepartement(depart[comboBox.getSelectedIndex()]);
+				em.setSalaire(Double.valueOf(textField_1.getText()));
+				if(emp.save(em)) {
+					JOptionPane.showMessageDialog(null, "Ajouter Avec Success");
+					load();
+				}
+				
+			}
+		});
 
 		ImageIcon image6= new ImageIcon(getClass().getResource("C:\\Users\\omar hayay\\examenswing\\src\\diskette.png"));
 		btnNewButton.setIcon(image6);
@@ -134,13 +153,15 @@ public class Principale extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int index=table.getSelectedRow();
 				if(index==-1) {
-					JOptionPane.showConfirmDialog(null, "nothing selected");
+					JOptionPane.showMessageDialog(null, "Rien");
 					return;
 				}
-				Employe em= emp.getOne((int)table.getModel().getValueAt(index, 0));
-				if(emp.delete(em)) {
-					JOptionPane.showConfirmDialog(null, "item deleted");
-					table.setModel(new EmployeModel(emp.getAll()));
+				if(JOptionPane.showConfirmDialog(null, "Are you sure")==JOptionPane.YES_OPTION) {
+					Employe em= emp.getOne((int)table.getModel().getValueAt(index, 0));
+					if(emp.delete(em)) {
+						JOptionPane.showMessageDialog(null, "Supprimmer Avec Success");
+						load();
+					}
 				}
 			}
 		});
@@ -171,7 +192,7 @@ public class Principale extends JFrame {
 		lblNewLabel_3.setBounds(10, 25, 344, 44);
 		panel_2.add(lblNewLabel_3);
 		
-		JLabel lblNewLabel_3_1 = new JLabel("0");
+		lblNewLabel_3_1 = new JLabel("0");
 		lblNewLabel_3_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_3_1.setFont(new Font("Tahoma", Font.PLAIN, 35));
 		lblNewLabel_3_1.setBounds(10, 80, 344, 44);
@@ -181,5 +202,10 @@ public class Principale extends JFrame {
 		panel_3.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Nombre Employe par departement", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_3.setBounds(646, 124, 537, 387);
 		contentPane.add(panel_3);
+		load();
+	}
+	public void load() {
+		table.setModel(new EmployeModel(emp.getAll()));
+		lblNewLabel_3_1.setText(String.valueOf(table.getModel().getRowCount()));
 	}
 }
