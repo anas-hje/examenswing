@@ -1,5 +1,3 @@
-
-
 package com.efm.crjj.ismo.ihm;
 
 import java.awt.EventQueue;
@@ -11,180 +9,160 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
+import java.awt.Dimension;
+
 import javax.swing.JTable;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 
-import com.efm.crjj.ismo.dao.DaoEmploye;
 import com.efm.crjj.ismo.metier.IMetier;
 import com.efm.crjj.ismo.metier.MetierEmploye;
 import com.efm.crjj.ismo.model.Employe;
-
-import antlr.collections.List;
+import com.efm.crjj.ismo.utils.DoubleValidate;
 
 import javax.swing.JScrollPane;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 
-public class panelPilote extends JPanel {
+public class Principale extends JFrame {
 
-	IMetier<Pilote> metier = new MetierPilote();
-	IMetier<Avion> metiertest = new MetierAvion();
-	List<Pilote> pilotes;
-	private JTable table;
+	private JPanel contentPane;
 	private JTextField textField;
 	private JTextField textField_1;
-	private JTextField textField_2;
+	IMetier<Employe> emp=new MetierEmploye();
+	private JTable table;
+	private static String[] depart = { "RH", "Finance", "Production" };
+	private DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(depart);
 
-	public panelPilote() {
-		setLayout(new BorderLayout(0, 0));
-
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBorder(new EmptyBorder(0, 30, 0, 30));
-
-		table = new JTable();
-		table.setFont(new Font("Verdana", Font.PLAIN, 14));
-		table.getTableHeader().setFont(new Font("Verdana", Font.BOLD, 14));
-		scrollPane.setViewportView(table);
-
-		pilotes = metier.getAll();
-		PiloteTableModel model = new PiloteTableModel(pilotes);
-		table.setModel(model);
-
-		JPanel panel = new JPanel();
-		FlowLayout flowLayout_1 = (FlowLayout) panel.getLayout();
-		flowLayout_1.setHgap(20);
-		panel.setBorder(new EmptyBorder(10, 0, 20, 0));
-		add(panel, BorderLayout.NORTH);
-
-		JLabel lblNewLabel = new JLabel("Nom : ");
-		lblNewLabel.setFont(new Font("Verdana", Font.BOLD, 14));
-		panel.add(lblNewLabel);
-
-		textField = new JTextField();
-		panel.add(textField);
-		textField.setFont(new Font("Verdana", Font.BOLD, 14));
-		textField.setColumns(10);
-
-		JLabel lblNewLabel_1 = new JLabel("Prenom :");
-		lblNewLabel_1.setFont(new Font("Verdana", Font.BOLD, 14));
-		panel.add(lblNewLabel_1);
-
-		textField_1 = new JTextField();
-		textField_1.setText("");
-		textField_1.setFont(new Font("Verdana", Font.BOLD, 14));
-		panel.add(textField_1);
-		textField_1.setColumns(10);
-
-		JButton btnNewButton = new JButton("Ajouter pilote");
-		btnNewButton.setFont(new Font("Verdana", Font.BOLD, 14));
-		ImageIcon image = new ImageIcon(getClass().getResource("/add.png"));
-		btnNewButton.setIcon(image);
-		panel.add(btnNewButton);
-
-		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new EmptyBorder(10, 20, 30, 20));
-		FlowLayout flowLayout = (FlowLayout) panel_1.getLayout();
-		flowLayout.setAlignment(FlowLayout.RIGHT);
-		add(panel_1, BorderLayout.SOUTH);
-
-		JButton btnNewButton_2 = new JButton("Imprimer");
-		btnNewButton_2.setFont(new Font("Verdana", Font.BOLD, 14));
-		ImageIcon image1 = new ImageIcon(getClass().getResource("/print.png"));
-		btnNewButton_2.setIcon(image1);
-		btnNewButton_2.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Principale frame = new Principale();
+					frame.setVisible(true);
+					frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		});
-		panel_1.add(btnNewButton_2);
+	}
 
-		JButton btnNewButton_1 = new JButton("Supprimer pilote");
-		btnNewButton_1.setFont(new Font("Verdana", Font.BOLD, 14));
-		ImageIcon image2 = new ImageIcon(getClass().getResource("/delete.png"));
-		btnNewButton_1.setIcon(image2);
+	/**
+	 * Create the frame.
+	 */
+	public Principale() {
+		setTitle("Gestion des employes");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 1197, 628);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JPanel panel = new JPanel();
+		panel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 1, true), "Nouvel Employe", TitledBorder.CENTER, TitledBorder.TOP, null, null));
+		panel.setBounds(10, 21, 242, 219);
+		contentPane.add(panel);
+		panel.setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("Nom et prenom :");
+		lblNewLabel.setBounds(10, 16, 222, 14);
+		panel.add(lblNewLabel);
+		
+		textField = new JTextField();
+		textField.setBounds(10, 41, 222, 20);
+		panel.add(textField);
+		textField.setColumns(10);
+		
+		JLabel lblNewLabel_1 = new JLabel("Departement");
+		lblNewLabel_1.setBounds(10, 72, 222, 14);
+		panel.add(lblNewLabel_1);
+		
+		JComboBox comboBox = new JComboBox();
+		comboBox.setBounds(10, 91, 222, 22);
+		panel.add(comboBox);
+		comboBox.setModel(model);
+		
+		JLabel lblNewLabel_2 = new JLabel("Salaire : ");
+		lblNewLabel_2.setBounds(10, 129, 222, 14);
+		panel.add(lblNewLabel_2);
+		
+		textField_1 = new JTextField();
+		textField_1.setBounds(10, 154, 222, 20);
+		panel.add(textField_1);
+		textField_1.setDocument(new DoubleValidate());
+		textField_1.setColumns(10);
+
+		//JButton btnNewButton = new MyButton("Engestrer" ,"/com/efm/crjj/ismo/img/more.png");
+		JButton btnNewButton = new JButton("Enregistrer");
+
+		ImageIcon image6= new ImageIcon(getClass().getResource("/com/efm/crjj/ismo/img/more.png"));
+		btnNewButton.setIcon(image6);
+		btnNewButton.setIconTextGap(5);
+		btnNewButton.setBounds(10, 185, 222, 23);
+		panel.add(btnNewButton);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setLayout(null);
+		panel_1.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 1, true), "Liste des employes", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel_1.setBounds(10, 251, 616, 322);
+		contentPane.add(panel_1);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(20, 27, 576, 241);
+		panel_1.add(scrollPane);
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
+		table.setModel(new EmployeModel(emp.getAll()));
+		
+		JButton btnNewButton_1 = new JButton("Supprimer");
+		btnNewButton_1.setHorizontalAlignment(SwingConstants.LEFT);
+		image6 = new ImageIcon(getClass().getResource("/com/efm/crjj/ismo/img/bin.png"));
+		btnNewButton_1.setIcon(image6);
+		btnNewButton_1.setIconTextGap(5);
+		btnNewButton_1.setBounds(472, 286, 124, 23);
 		panel_1.add(btnNewButton_1);
+		
+		JButton btnNewButton_1_1 = new JButton("Imprimer");
 
+		image6= new ImageIcon(getClass().getResource("/com/efm/crjj/ismo/img/printer.png"));
+		btnNewButton_1.setIcon(image6);
+		btnNewButton_1.setIconTextGap(5);
+		btnNewButton_1_1.setBounds(327, 286, 135, 23);
+		panel_1.add(btnNewButton_1_1);
+		
 		JPanel panel_2 = new JPanel();
-		add(panel_2, BorderLayout.CENTER);
-		panel_2.setLayout(new BorderLayout(0, 0));
-		panel_2.add(scrollPane);
-
+		panel_2.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
+		panel_2.setBounds(262, 35, 364, 147);
+		contentPane.add(panel_2);
+		panel_2.setLayout(null);
+		
+		JLabel lblNewLabel_3 = new JLabel("Nombre des employes ");
+		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 33));
+		lblNewLabel_3.setBounds(10, 25, 344, 44);
+		panel_2.add(lblNewLabel_3);
+		
+		JLabel lblNewLabel_3_1 = new JLabel("0");
+		lblNewLabel_3_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_3_1.setFont(new Font("Tahoma", Font.PLAIN, 35));
+		lblNewLabel_3_1.setBounds(10, 80, 344, 44);
+		panel_2.add(lblNewLabel_3_1);
+		
 		JPanel panel_3 = new JPanel();
-		panel_3.setBorder(new EmptyBorder(0, 0, 0, 30));
-		FlowLayout flowLayout_2 = (FlowLayout) panel_3.getLayout();
-		flowLayout_2.setAlignment(FlowLayout.RIGHT);
-		panel_2.add(panel_3, BorderLayout.NORTH);
-
-		textField_2 = new JTextField();
-		textField_2.setPreferredSize(new Dimension(30, 20));
-		panel_3.add(textField_2);
-		textField_2.setColumns(10);
-
-		JButton btnNewButton_3 = new JButton("");
-		ImageIcon image3 = new ImageIcon(getClass().getResource("/find.png"));
-		btnNewButton_3.setIcon(image3);
-		panel_3.add(btnNewButton_3);
-
+		panel_3.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Nombre Employe par departement", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel_3.setBounds(646, 124, 537, 387);
+		contentPane.add(panel_3);
 	}
-
-}
-
-class PiloteTableModel extends AbstractTableModel {
-
-	private String[] cols = { "Code Pilote", "Nom Pilote", "Prenom Pilote" };
-	List<Pilote> pilotes;
-
-	public PiloteTableModel(List<Pilote> pilotes) {
-		super();
-		this.pilotes = pilotes;
-	}
-
-	@Override
-	public int getRowCount() {
-		// TODO Auto-generated method stub
-		return pilotes.size();
-	}
-
-	@Override
-	public int getColumnCount() {
-		// TODO Auto-generated method stub
-		return cols.length;
-	}
-
-	@Override
-	public String getColumnName(int column) {
-		// TODO Auto-generated method stub
-		return cols[column];
-	}
-
-	@Override
-	public Object getValueAt(int rowIndex, int columnIndex) {
-		// TODO Auto-generated method stub
-		Pilote p = pilotes.get(rowIndex);
-		switch (columnIndex) {
-		case 0:
-			return String.format("P%04d", p.getId());
-		case 1:
-			return p.getNom().toUpperCase();
-		case 2:
-			return p.getPrenom().toUpperCase();
-		}
-		return null;
-	}
-
 }
